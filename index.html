@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VenueVibe | Premium Event Experience</title>
-    <meta name="description" content="VenueVibe: The ultimate AI-powered physical event experience and stadium navigator.">
+    <meta name="description"
+        content="VenueVibe: The ultimate AI-powered physical event experience and stadium navigator.">
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <link rel="preconnect" href="https://maps.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -375,10 +376,22 @@
                 opacity: 1;
             }
         }
+
         @keyframes pulseRed {
-            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 75, 43, 0.7); }
-            70% { transform: scale(1); box-shadow: 0 0 0 15px rgba(255, 75, 43, 0); }
-            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 75, 43, 0); }
+            0% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(255, 75, 43, 0.7);
+            }
+
+            70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 15px rgba(255, 75, 43, 0);
+            }
+
+            100% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(255, 75, 43, 0);
+            }
         }
 
         .vibe-points {
@@ -538,23 +551,28 @@
 
     <div id="toast">
         <span>Want +50 VibePoints? Route to the Section 112 Grab-and-Go instead to balance the crowd!</span>
-        <button onclick="claimPoints()" class="chip" style="margin: 0; padding: 6px 15px; background: var(--primary); color: #000; border: none; font-weight: bold;">Accept</button>
+        <button onclick="claimPoints()" class="chip"
+            style="margin: 0; padding: 6px 15px; background: var(--primary); color: #000; border: none; font-weight: bold;">Accept</button>
     </div>
 
     <div id="modal-overlay"></div>
     <div id="beacon-modal" class="glass-panel">
         <h3 style="color: #ff4b2b; margin-bottom: 10px; font-size: 1.5rem;">Beacon Activated</h3>
-        <p style="margin-bottom: 20px; font-size: 14px; color: #cbd5e1;">Broadcast this pin to friends or Stadium Security.</p>
+        <p style="margin-bottom: 20px; font-size: 14px; color: #cbd5e1;">Broadcast this pin to friends or Stadium
+            Security.</p>
         <div style="display: flex; justify-content: center; gap: 10px;">
-            <button onclick="copyLocation()" class="chip" style="background: rgba(255, 75, 43, 0.2); border-color: #ff4b2b; color: #fff;">Copy Location Link</button>
-            <button onclick="closeBeacon()" class="chip" style="background: rgba(255, 255, 255, 0.1); border-color: rgba(255,255,255,0.3);">Close</button>
+            <button onclick="copyLocation()" class="chip"
+                style="background: rgba(255, 75, 43, 0.2); border-color: #ff4b2b; color: #fff;">Copy Location
+                Link</button>
+            <button onclick="closeBeacon()" class="chip"
+                style="background: rgba(255, 255, 255, 0.1); border-color: rgba(255,255,255,0.3);">Close</button>
         </div>
     </div>
 
     <script>
         let map, heatmap;
         let vibePoints = parseInt(localStorage.getItem('vibePoints')) || 0;
-        
+
         // Initialize points on load
         document.getElementById('vibe-score').innerText = vibePoints;
 
@@ -570,7 +588,7 @@
         function activateBeacon() {
             document.getElementById('beacon-modal').style.display = 'block';
             document.getElementById('modal-overlay').style.display = 'block';
-            
+
             if (!customMarker && typeof google !== 'undefined') {
                 class PulseMarker extends google.maps.OverlayView {
                     constructor(latlng, map) {
@@ -609,11 +627,16 @@
         }
 
         function copyLocation() {
-            navigator.clipboard.writeText("https://venuevibe.app/beacon?lat=28.6143&lng=77.2001").then(() => {
+            // Dynamically grabs your secure Cloud Run URL to bypass the SSL error
+            const liveLink = window.location.origin + "/?lat=28.6143&lng=77.2001";
+
+            navigator.clipboard.writeText(liveLink).then(() => {
                 const btn = document.querySelector('#beacon-modal .chip:first-child');
                 const originalText = btn.innerText;
                 btn.innerText = "Copied! ✔";
                 setTimeout(() => { btn.innerText = originalText; }, 2000);
+            }).catch(err => {
+                console.error("Failed to copy link: ", err);
             });
         }
 
@@ -676,7 +699,7 @@
         function sendQuickMessage(text) {
             inputField.value = text;
             askAI();
-            
+
             // Gamification Intercept
             if (text.includes("Food") || text.includes("Restroom") || text.includes("Exit")) {
                 setTimeout(() => {
