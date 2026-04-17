@@ -164,6 +164,10 @@
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             font-family: 'Space Grotesk', sans-serif;
+            position: relative;
+            overflow: hidden;
+            transform-style: preserve-3d;
+            will-change: transform;
         }
 
         .chip:hover {
@@ -247,9 +251,22 @@
             box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
         }
 
+        @keyframes breathingGlow {
+
+            0%,
+            100% {
+                box-shadow: 0 0 15px rgba(0, 242, 254, 0.2), inset 0 0 10px rgba(0, 0, 0, 0.5);
+                border-color: rgba(0, 242, 254, 0.4);
+            }
+
+            50% {
+                box-shadow: 0 0 30px rgba(0, 242, 254, 0.6), inset 0 0 10px rgba(0, 0, 0, 0.5);
+                border-color: rgba(0, 242, 254, 0.8);
+            }
+        }
+
         .input-group:focus-within {
-            border-color: rgba(0, 242, 254, 0.6);
-            box-shadow: 0 0 25px rgba(0, 242, 254, 0.3), inset 0 0 10px rgba(0, 0, 0, 0.5);
+            animation: breathingGlow 2s infinite ease-in-out;
         }
 
         input[type="text"] {
@@ -279,6 +296,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            position: relative;
+            overflow: hidden;
         }
 
         .action-btn:hover {
@@ -497,6 +516,23 @@
             -webkit-backdrop-filter: blur(5px);
             z-index: 1999;
         }
+
+        /* Ripple Animation */
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            transform: scale(0);
+            animation: ripple-anim 0.6s linear;
+            background-color: rgba(255, 255, 255, 0.4);
+            pointer-events: none;
+        }
+
+        @keyframes ripple-anim {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
     </style>
 </head>
 
@@ -570,6 +606,74 @@
     </div>
 
     <script>
+        // --- Vibe Interactivity: Sensory Audio ---
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        function playSingingBowl() {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(432, audioCtx.currentTime); // 432Hz
+            gain.gain.setValueAtTime(0, audioCtx.currentTime);
+            gain.gain.linearRampToValueAtTime(0.3, audioCtx.currentTime + 0.1);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 3);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 3);
+        }
+
+        function playSonarPing() {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(300, audioCtx.currentTime + 0.5);
+            gain.gain.setValueAtTime(0, audioCtx.currentTime);
+            gain.gain.linearRampToValueAtTime(0.4, audioCtx.currentTime + 0.05);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 1.5);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 1.5);
+        }
+
+        // --- Vibe Interactivity: Micro-Animations & 3D Hover ---
+        document.addEventListener("DOMContentLoaded", () => {
+            document.querySelectorAll('.chip, .action-btn').forEach(btn => {
+                btn.addEventListener('click', function (e) {
+                    const rect = this.getBoundingClientRect();
+                    const circle = document.createElement('span');
+                    circle.classList.add('ripple');
+                    circle.style.left = `${e.clientX - rect.left}px`;
+                    circle.style.top = `${e.clientY - rect.top}px`;
+                    const diameter = Math.max(rect.width, rect.height);
+                    circle.style.width = circle.style.height = `${diameter}px`;
+                    circle.style.transform = `translate(-50%, -50%) scale(0)`;
+                    this.appendChild(circle);
+                    setTimeout(() => circle.remove(), 600);
+                });
+            });
+
+            document.querySelectorAll('.chip').forEach(chip => {
+                chip.addEventListener('mousemove', (e) => {
+                    const rect = chip.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    const rotateX = ((y - centerY) / centerY) * -15;
+                    const rotateY = ((x - centerX) / centerX) * 15;
+                    chip.style.transform = `perspective(500px) scale(1.05) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-2px)`;
+                });
+                chip.addEventListener('mouseleave', () => {
+                    chip.style.transform = `perspective(500px) scale(1) rotateX(0deg) rotateY(0deg) translateY(0px)`;
+                });
+            });
+        });
+
         let map, heatmap;
         let vibePoints = parseInt(localStorage.getItem('vibePoints')) || 0;
 
@@ -577,6 +681,7 @@
         document.getElementById('vibe-score').innerText = vibePoints;
 
         function claimPoints() {
+            playSingingBowl();
             vibePoints += 50;
             localStorage.setItem('vibePoints', vibePoints);
             document.getElementById('vibe-score').innerText = vibePoints;
@@ -586,6 +691,7 @@
         let customMarker = null;
 
         function activateBeacon() {
+            playSonarPing();
             document.getElementById('beacon-modal').style.display = 'block';
             document.getElementById('modal-overlay').style.display = 'block';
 
