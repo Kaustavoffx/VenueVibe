@@ -3,5 +3,4 @@ uvicorn
 google-genai
 python-dotenv
 pytest
-httpx
-jinja2
+google-cloud-storage

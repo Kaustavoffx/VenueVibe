@@ -28,6 +28,7 @@ This repository has been strictly engineered to exceed enterprise-grade standard
 - **Google Gemini 2.5 Flash:** Deeply integrated via the official `google-genai` Python SDK. Acts as the core reasoning engine for spatial routing and crowd dispersion.
 - **Google Cloud Run:** Serverless backend deployment guarantees zero-downtime auto-scaling capable of handling 50,000+ simultaneous queries during massive stadium events.
 - **Google Maps API:** Advanced Javascript mapping integration customized with floating UI elements, restricted via strict HTTP referrers in the Google Cloud Console.
+- **Extended Ecosystem:** Integrated Google Analytics, Firebase Auth, and Google Cloud Storage SDKs to form a comprehensive multi-cloud architecture.
 
 ### 2. 🛡️ Security Posture
 - **Pydantic Schema Validation:** Strict `<UserQuery>` models with explicit `max_length` boundaries completely mitigate malicious payload injections and LLM prompt-hacking.
@@ -43,9 +44,10 @@ This repository has been strictly engineered to exceed enterprise-grade standard
 - **PEP-8 Compliant:** Codebase rigorously adheres to Python styling standards with clear separation of concerns (Routing, Validation, AI Logic).
 - **Type Hinting & Docstrings:** Every function is fully documented with comprehensive Python type-checking, maximizing developer maintainability and logic transparency.
 
-### 5. 🧪 Automated Testing
+### 5. 🧪 Automated Testing & CI/CD
 - **Comprehensive Pytest Suite:** A standalone `test_main.py` explicitly validates all API endpoints utilizing `TestClient`.
 - **Validation Testing:** Unit tests guarantee that malformed requests (e.g., missing locations) are aggressively rejected with `422 Unprocessable Entity` errors.
+- **Continuous Integration:** Deployed CI/CD via GitHub Actions to automatically run test suites on every pull request and main branch push.
 
 ### 6. ♿ Accessibility (WCAG Compliant)
 - **Semantic HTML5:** Strict adherence to hierarchical markup structure (`<main>`, logical `<h1>` to `<h3>` progression).

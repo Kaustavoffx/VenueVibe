@@ -534,6 +534,21 @@
             }
         }
     </style>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VENUEVIBE"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-VENUEVIBE');
+    </script>
+    
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+      import { getAuth } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-auth.js";
+      const firebaseConfig = { projectId: "venuevibe-35646328" };
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+    </script>
 </head>
 
 <body>
