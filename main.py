@@ -1,8 +1,7 @@
 import os
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import HTMLResponse
-from fastapi.templating import Jinja2Templates
+from fastapi.responses import HTMLResponse, FileResponse
 from fastapi import Request
 from pydantic import BaseModel
 from google import genai
@@ -31,16 +30,20 @@ class UserQuery(BaseModel):
     user_location: str
     query: str
 
-templates = Jinja2Templates(directory=".")
-
-@app.get("/", response_class=HTMLResponse)
-async def serve_index(request: Request):
-    """
-    Serves the frontend HTML, injecting the Maps API Key securely.
-    """
-    maps_api_key = os.getenv("MAPS_API_KEY", "YOUR_MAPS_API_KEY")
-    return templates.TemplateResponse("index.html", {"request": request, "MAPS_API_KEY": maps_api_key})
-
+@app.get("/")
+async def serve_index():
+    """Serves the frontend HTML using an absolute path."""
+    # Find the exact directory this Python script is running in
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    # Glue it together with the filename
+    file_path = os.path.join(current_dir, "index.html")
+    
+    # Check if the file exists before trying to serve it
+    if not os.path.exists(file_path):
+        raise HTTPException(status_code=404, detail=f"File not found at {file_path}")
+        
+    return FileResponse(file_path)
+    
 @app.post("/api/ask-gemini")
 async def get_venue_guidance(query_data: UserQuery):
     """
