@@ -3,176 +3,275 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VenueVibe: Smart Stadium Guide</title>
+    <title>VenueVibe | Premium Event Experience</title>
     <style>
-        /* Modern Glassmorphism UI */
+        /* ===== GOD-TIER CSS STYLING ===== */
+        :root {
+            --primary: #00f2fe;
+            --secondary: #4facfe;
+            --bg-dark: #0a0f18;
+            --panel-bg: rgba(16, 23, 40, 0.6);
+            --ai-bubble: rgba(30, 41, 59, 0.8);
+            --user-bubble: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-            color: #ffffff;
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            margin: 0; padding: 20px;
+            background: radial-gradient(circle at top left, #1a1525, var(--bg-dark), #051421);
+            color: #e2e8f0;
             min-height: 100vh;
+            display: flex; flex-direction: column; align-items: center;
         }
-        h1 { font-weight: 300; letter-spacing: 2px; }
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 20px;
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(0, 242, 254, 0.3); border-radius: 10px; }
+
+        h1 {
+            font-weight: 800; letter-spacing: 2px; text-transform: uppercase;
+            text-shadow: 0 0 20px rgba(0, 242, 254, 0.4);
+            margin-bottom: 25px;
+        }
+        h1 span { color: var(--primary); }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
             width: 100%;
-            max-width: 900px;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            max-width: 1200px;
         }
-        #map { height: 450px; width: 100%; border-radius: 10px; }
-        .input-group { display: flex; gap: 10px; margin-top: 15px; }
+
+        @media (max-width: 800px) {
+            .dashboard { grid-template-columns: 1fr; }
+        }
+
+        .glass-panel {
+            background: var(--panel-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4), inset 0 0 0 1px rgba(255,255,255,0.05);
+            display: flex; flex-direction: column;
+        }
+
+        /* Maps Section */
+        #map { height: 400px; width: 100%; border-radius: 15px; }
+        
+        .quick-chips {
+            display: flex; gap: 10px; margin-top: 15px; flex-wrap: wrap;
+        }
+        .chip {
+            background: rgba(255,255,255,0.05); border: 1px solid rgba(0, 242, 254, 0.3);
+            color: #fff; padding: 8px 15px; border-radius: 20px; font-size: 13px;
+            cursor: pointer; transition: all 0.3s ease;
+        }
+        .chip:hover { background: rgba(0, 242, 254, 0.2); transform: translateY(-2px); }
+
+        /* Chat Section */
+        .chat-header {
+            display: flex; align-items: center; justify-content: space-between;
+            border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; margin-bottom: 15px;
+        }
+        .status-dot {
+            height: 10px; width: 10px; background: #10b981; border-radius: 50%;
+            display: inline-block; box-shadow: 0 0 10px #10b981; animation: pulse 2s infinite;
+        }
+
+        #chat-history {
+            flex-grow: 1; height: 350px; overflow-y: auto;
+            display: flex; flex-direction: column; gap: 15px; padding-right: 10px;
+        }
+
+        .message {
+            max-width: 80%; padding: 12px 18px; border-radius: 18px;
+            font-size: 14.5px; line-height: 1.5; animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            opacity: 0; transform: translateY(10px);
+        }
+        .message.ai {
+            background: var(--ai-bubble); color: #cbd5e1;
+            border-bottom-left-radius: 4px; align-self: flex-start;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .message.user {
+            background: var(--user-bubble); color: #000; font-weight: 500;
+            border-bottom-right-radius: 4px; align-self: flex-end;
+            box-shadow: 0 5px 15px rgba(0, 242, 254, 0.2);
+        }
+
+        /* Input Area */
+        .input-group {
+            display: flex; gap: 10px; margin-top: 15px;
+            background: rgba(0,0,0,0.3); padding: 8px; border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
         input[type="text"] {
-            flex: 1;
-            padding: 15px;
-            border-radius: 8px;
-            border: none;
-            background: rgba(255, 255, 255, 0.9);
-            font-size: 16px;
+            flex: 1; background: transparent; border: none; color: white;
+            padding: 10px; font-size: 15px; outline: none;
         }
-        button {
-            padding: 15px 25px;
-            border: none;
-            border-radius: 8px;
-            background: #00d2ff;
-            background: linear-gradient(to right, #3a7bd5, #00d2ff);
-            color: white;
-            font-weight: bold;
-            cursor: pointer;
-            transition: transform 0.2s;
+        input::placeholder { color: rgba(255,255,255,0.4); }
+        
+        .action-btn {
+            background: transparent; border: none; font-size: 20px;
+            cursor: pointer; padding: 10px; border-radius: 10px; transition: 0.2s;
+            display: flex; align-items: center; justify-content: center;
         }
-        button:hover { transform: scale(1.05); }
-        .mic-btn { background: #ff416c; background: linear-gradient(to right, #ff4b2b, #ff416c); }
-        #response-area {
-            margin-top: 15px;
-            padding: 15px;
-            border-left: 4px solid #00d2ff;
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 0 8px 8px 0;
-            min-height: 50px;
-        }
+        .action-btn:hover { background: rgba(255,255,255,0.1); }
+        .send-btn { color: var(--primary); }
+        .mic-btn { color: #ff4b2b; }
+
+        /* Animations */
+        @keyframes popIn { to { opacity: 1; transform: translateY(0); } }
+        @keyframes pulse { 0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); } 70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); } 100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); } }
+        
+        /* Typing Indicator */
+        .typing { display: flex; gap: 4px; padding: 5px; }
+        .typing .dot { width: 6px; height: 6px; background: #cbd5e1; border-radius: 50%; animation: bounce 1.4s infinite ease-in-out both; }
+        .typing .dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing .dot:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes bounce { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
     </style>
 </head>
 <body>
-    <h1>VENUE<span style="font-weight: bold; color: #00d2ff;">VIBE</span></h1>
+    <h1>VENUE<span style="color: #00f2fe;">VIBE</span></h1>
     
-    <div class="glass-panel">
-        <div id="map" aria-label="Interactive Stadium Map"></div>
-    </div>
+    <div class="dashboard">
+        <div class="glass-panel">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+                <h3 style="margin: 0;">Live Stadium Map</h3>
+                <span style="font-size: 12px; color: #00f2fe;">Gate 4 Zone</span>
+            </div>
+            <div id="map"></div>
+            <div class="quick-chips">
+                <div class="chip" onclick="sendQuickMessage('Where is the nearest restroom with the shortest line?')">🚻 Nearest Restroom</div>
+                <div class="chip" onclick="sendQuickMessage('What is the current wait time at Food Court A?')">🍔 Food Wait Times</div>
+                <div class="chip" onclick="sendQuickMessage('Suggest the fastest exit route to the parking lot.')">🏃 Fastest Exit</div>
+            </div>
+        </div>
 
-    <div class="glass-panel">
-        <h2>AI Concierge</h2>
-        <div id="response-area">Ask me about restroom lines, food wait times, or the fastest exit!</div>
-        
-        <div class="input-group">
-            <input type="text" id="userInput" placeholder="E.g., Which gate is least crowded right now?">
-            <button onclick="askAI()" id="askBtn">Ask AI</button>
-            <button onclick="startDictation()" class="mic-btn" title="Speak your question">🎤</button>
+        <div class="glass-panel">
+            <div class="chat-header">
+                <h3 style="margin: 0;">AI Concierge</h3>
+                <div style="font-size: 13px; color: #94a3b8;"><span class="status-dot"></span> System Online</div>
+            </div>
+            
+            <div id="chat-history">
+                <div class="message ai">Welcome to VenueVibe! I'm your AI guide powered by Gemini. How can I optimize your event experience today?</div>
+            </div>
+            
+            <div class="input-group">
+                <button onclick="startDictation()" class="action-btn mic-btn" title="Voice Input">🎙️</button>
+                <input type="text" id="userInput" placeholder="Ask about routes, lines, or facilities..." onkeypress="handleEnter(event)">
+                <button onclick="askAI()" class="action-btn send-btn" title="Send">➤</button>
+            </div>
         </div>
     </div>
 
     <script>
         let map, heatmap;
 
+        // Initialize Google Maps
         function initMap() {
-            // Centered on a generic stadium location (can adjust to Rashtrapati Bhavan coords if desired)
             const stadiumCoords = { lat: 28.6143, lng: 77.2001 }; 
             map = new google.maps.Map(document.getElementById("map"), {
-                zoom: 16,
-                center: stadiumCoords,
-                mapTypeId: 'satellite'
+                zoom: 17, center: stadiumCoords, mapTypeId: 'satellite', disableDefaultUI: true
             });
 
-            // Feature: Simulated Real-time Crowd Heatmap
             const crowdData = [
-                new google.maps.LatLng(28.6145, 77.2005),
-                new google.maps.LatLng(28.6144, 77.2004),
-                new google.maps.LatLng(28.6146, 77.2006),
-                new google.maps.LatLng(28.6139, 77.1995), // Another cluster
-                new google.maps.LatLng(28.6138, 77.1994)
+                new google.maps.LatLng(28.6145, 77.2005), new google.maps.LatLng(28.6144, 77.2004),
+                new google.maps.LatLng(28.6139, 77.1995)
             ];
 
             heatmap = new google.maps.visualization.HeatmapLayer({
-                data: crowdData,
-                map: map,
-                radius: 40,
-                opacity: 0.8
+                data: crowdData, map: map, radius: 45, opacity: 0.9,
+                gradient: ['rgba(0, 255, 255, 0)', 'rgba(0, 255, 255, 1)', 'rgba(0, 191, 255, 1)', 'rgba(0, 127, 255, 1)', 'rgba(0, 63, 255, 1)', 'rgba(0, 0, 255, 1)', 'rgba(0, 0, 223, 1)', 'rgba(0, 0, 191, 1)', 'rgba(0, 0, 159, 1)', 'rgba(0, 0, 127, 1)', 'rgba(63, 0, 91, 1)', 'rgba(127, 0, 63, 1)', 'rgba(191, 0, 31, 1)', 'rgba(255, 0, 0, 1)']
             });
             
-            // Feature: Interactive Clickable Marker
-            const marker = new google.maps.Marker({
-                position: stadiumCoords,
-                map: map,
-                title: "Food Court A"
-            });
-            
-            marker.addListener("click", () => {
-                document.getElementById('userInput').value = "What is the current wait time at Food Court A?";
-            });
+            new google.maps.Marker({ position: stadiumCoords, map: map, title: "Your Location", icon: { url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png" } });
         }
 
-        // Feature: Voice to Text Setup
+        // Chat UI Functions
+        const chatHistory = document.getElementById('chat-history');
+        const inputField = document.getElementById('userInput');
+
+        function appendMessage(sender, text) {
+            const div = document.createElement('div');
+            div.className = `message ${sender}`;
+            div.innerHTML = text;
+            chatHistory.appendChild(div);
+            chatHistory.scrollTop = chatHistory.scrollHeight;
+            return div;
+        }
+
+        function showTyping() {
+            const div = document.createElement('div');
+            div.className = 'message ai typing-bubble';
+            div.innerHTML = `<div class="typing"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>`;
+            chatHistory.appendChild(div);
+            chatHistory.scrollTop = chatHistory.scrollHeight;
+            return div;
+        }
+
+        function handleEnter(e) { if (e.key === 'Enter') askAI(); }
+        
+        function sendQuickMessage(text) {
+            inputField.value = text;
+            askAI();
+        }
+
+        // Voice to Text
         function startDictation() {
             if (window.hasOwnProperty('webkitSpeechRecognition')) {
                 const recognition = new webkitSpeechRecognition();
-                recognition.continuous = false;
-                recognition.interimResults = false;
                 recognition.lang = "en-IN";
                 recognition.start();
-
-                document.getElementById('userInput').placeholder = "Listening...";
-
+                inputField.placeholder = "Listening...";
                 recognition.onresult = function(e) {
-                    document.getElementById('userInput').value = e.results[0][0].transcript;
-                    recognition.stop();
-                    document.getElementById('userInput').placeholder = "E.g., Which gate is least crowded right now?";
+                    inputField.value = e.results[0][0].transcript;
+                    askAI();
+                    inputField.placeholder = "Ask about routes, lines, or facilities...";
                 };
-                recognition.onerror = function(e) { recognition.stop(); }
-            } else {
-                alert("Voice recognition not supported in this browser. Please type your query.");
-            }
+            } else { alert("Voice recognition not supported. Please type."); }
         }
 
+        // Connect to FastAPI Backend
         async function askAI() {
-            const query = document.getElementById('userInput').value;
-            const resArea = document.getElementById('response-area');
-            const askBtn = document.getElementById('askBtn');
-            
+            const query = inputField.value.trim();
             if(!query) return;
 
-            resArea.innerHTML = "<em>Analyzing live crowd patterns...</em>";
-            askBtn.disabled = true;
+            appendMessage('user', query);
+            inputField.value = '';
+            const typingIndicator = showTyping();
             
             try {
-                // Ensure this is hitting the current domain's API route
+                // Pointing to your FastAPI route serving on Cloud Run
                 const response = await fetch('/api/ask-gemini', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ user_location: "Gate 4", query: query })
                 });
                 
-                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                typingIndicator.remove();
                 
+                if (!response.ok) throw new Error("Server error");
                 const data = await response.json();
-                resArea.innerHTML = `<strong>AI:</strong> ${data.response}`;
+                
+                // Add a small delay to simulate human typing speed
+                setTimeout(() => {
+                    appendMessage('ai', data.response);
+                }, 300);
+
             } catch (error) {
-                resArea.innerHTML = `<span style="color: #ff4b2b;">Error: Ensure you are viewing the live Cloud Run URL, not a local file.</span>`;
-                console.error("AI Fetch Error:", error);
-            } finally {
-                askBtn.disabled = false;
+                typingIndicator.remove();
+                appendMessage('ai', `<span style="color: #ff4b2b;">Connection Error: Ensure your API keys are set in Cloud Run.</span>`);
             }
         }
     </script>
+    
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBz6xsSJRm1nzy8Apo7w0meyZNhjnRlaHk&libraries=visualization&callback=initMap"></script>
 </body>
 </html>
