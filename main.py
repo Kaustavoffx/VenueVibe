@@ -2,6 +2,7 @@ import os
 import logging
 from fastapi import FastAPI, HTTPException, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.responses import FileResponse
 from pydantic import BaseModel, Field
 from google import genai
@@ -21,6 +22,9 @@ app.add_middleware(
     allow_methods=["GET", "POST"],
     allow_headers=["*"],
 )
+
+# Efficiency: Compress responses to minimize bandwidth payload
+app.add_middleware(GZipMiddleware, minimum_size=1000)
 
 # Security & Efficiency: Strict HTTP Headers and Cache Control
 @app.middleware("http")

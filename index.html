@@ -7,7 +7,7 @@
     <title>VenueVibe | Premium Event Experience</title>
     <meta name="description"
         content="VenueVibe: The ultimate AI-powered physical event experience and stadium navigator.">
-    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https: 'unsafe-inline' 'unsafe-eval'; img-src 'self' data: https:; connect-src 'self' https:;">
     <link rel="preconnect" href="https://maps.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <!-- Import Space Grotesk and Inter fonts -->
@@ -586,7 +586,7 @@
                 </div>
             </div>
 
-            <div id="chat-history">
+            <div id="chat-history" aria-live="polite" aria-atomic="true">
                 <div class="message ai">Welcome to VenueVibe! I'm your AI guide powered by Gemini. How can I optimize
                     your event experience today?</div>
             </div>
