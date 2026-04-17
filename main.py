@@ -1,9 +1,7 @@
 import os
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import HTMLResponse
-from fastapi.templating import Jinja2Templates
-from fastapi import Request
+from fastapi.responses import FileResponse
 from pydantic import BaseModel
 from google import genai
 from dotenv import load_dotenv
@@ -31,15 +29,12 @@ class UserQuery(BaseModel):
     user_location: str
     query: str
 
-templates = Jinja2Templates(directory=".")
-
-@app.get("/", response_class=HTMLResponse)
-async def serve_index(request: Request):
+@app.get("/")
+async def serve_index():
     """
-    Serves the frontend HTML, injecting the Maps API Key securely.
+    Serves the frontend HTML.
     """
-    maps_api_key = os.getenv("MAPS_API_KEY", "YOUR_MAPS_API_KEY")
-    return templates.TemplateResponse("index.html", {"request": request, "MAPS_API_KEY": maps_api_key})
+    return FileResponse("index.html")
 
 @app.post("/api/ask-gemini")
 async def get_venue_guidance(query_data: UserQuery):

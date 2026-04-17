@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VenueVibe | Premium Event Experience</title>
     <!-- Import Space Grotesk and Inter fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Space+Grotesk:wght@500;700&display=swap"
+        rel="stylesheet">
     <style>
         /* ===== GOD-TIER CSS STYLING ===== */
         :root {
@@ -20,34 +23,61 @@
 
         body {
             font-family: 'Inter', system-ui, sans-serif;
-            margin: 0; padding: 30px;
+            margin: 0;
+            padding: 30px;
             /* Animated Mesh Gradient Background */
             background: linear-gradient(45deg, var(--bg-dark), var(--bg-mid), #001220, #002b36);
             background-size: 400% 400%;
             animation: meshGradient 20s ease infinite;
             color: #e2e8f0;
             min-height: 100vh;
-            display: flex; flex-direction: column; align-items: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         @keyframes meshGradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
         }
 
         /* Ultra-thin Futuristic Scrollbar */
-        ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: rgba(0, 242, 254, 0.5); border-radius: 10px; }
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(0, 242, 254, 0.5);
+            border-radius: 10px;
+        }
 
         h1 {
             font-family: 'Space Grotesk', sans-serif;
-            font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
             text-shadow: 0 0 15px rgba(0, 242, 254, 0.8), 0 0 30px rgba(0, 242, 254, 0.4);
-            margin-bottom: 30px; font-size: 2.5rem; text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+            text-align: center;
         }
-        h1 span { color: var(--primary); }
+
+        h1 span {
+            color: var(--primary);
+        }
 
         .dashboard {
             display: grid;
@@ -58,7 +88,9 @@
         }
 
         @media (max-width: 900px) {
-            .dashboard { grid-template-columns: 1fr; }
+            .dashboard {
+                grid-template-columns: 1fr;
+            }
         }
 
         /* Advanced Deep Layered Glassmorphism */
@@ -69,47 +101,69 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 24px;
             padding: 25px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6), inset 0 0 20px rgba(255,255,255,0.02);
-            display: flex; flex-direction: column;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6), inset 0 0 20px rgba(255, 255, 255, 0.02);
+            display: flex;
+            flex-direction: column;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
         .glass-panel h3 {
             font-family: 'Space Grotesk', sans-serif;
-            margin: 0; font-weight: 500; font-size: 1.2rem;
-            text-shadow: 0 0 10px rgba(255,255,255,0.2);
+            margin: 0;
+            font-weight: 500;
+            font-size: 1.2rem;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
         }
 
         /* Maps Section with Floating Animation */
-        #map { 
-            height: 420px; width: 100%; 
-            border-radius: 18px; 
+        #map {
+            height: 420px;
+            width: 100%;
+            border-radius: 18px;
             border: 1px solid rgba(0, 242, 254, 0.2);
             animation: floatMap 6s ease-in-out infinite;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
         }
 
         @keyframes floatMap {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-6px); box-shadow: 0 20px 40px rgba(0,242,254,0.15); }
-            100% { transform: translateY(0px); }
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-6px);
+                box-shadow: 0 20px 40px rgba(0, 242, 254, 0.15);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
         }
-        
+
         .quick-chips {
-            display: flex; gap: 12px; margin-top: 20px; flex-wrap: wrap; justify-content: center;
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
         }
-        
+
         /* Magnetic Hover Effects for Chips */
         .chip {
-            background: rgba(255,255,255,0.03); 
+            background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(0, 242, 254, 0.4);
-            color: #fff; padding: 10px 18px; border-radius: 30px; font-size: 13px;
-            cursor: pointer; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            color: #fff;
+            padding: 10px 18px;
+            border-radius: 30px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             font-family: 'Space Grotesk', sans-serif;
         }
-        .chip:hover { 
-            background: rgba(0, 242, 254, 0.15); 
-            transform: scale(1.05) translateY(-2px); 
+
+        .chip:hover {
+            background: rgba(0, 242, 254, 0.15);
+            transform: scale(1.05) translateY(-2px);
             box-shadow: 0 0 15px rgba(0, 242, 254, 0.6);
             border-color: #00f2fe;
             color: #00f2fe;
@@ -117,119 +171,249 @@
 
         /* Chat Section */
         .chat-header {
-            display: flex; align-items: center; justify-content: space-between;
-            border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 15px; margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 15px;
+            margin-bottom: 20px;
         }
+
         .status-dot {
-            height: 10px; width: 10px; background: #00f2fe; border-radius: 50%;
-            display: inline-block; box-shadow: 0 0 12px #00f2fe; animation: pulse 2s infinite;
+            height: 10px;
+            width: 10px;
+            background: #00f2fe;
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 12px #00f2fe;
+            animation: pulse 2s infinite;
         }
 
         #chat-history {
-            flex-grow: 1; height: 350px; overflow-y: auto;
-            display: flex; flex-direction: column; gap: 15px; padding-right: 15px;
+            flex-grow: 1;
+            height: 350px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            padding-right: 15px;
         }
 
         .message {
-            max-width: 82%; padding: 14px 20px; border-radius: 20px;
-            font-size: 14.5px; line-height: 1.6; 
+            max-width: 82%;
+            padding: 14px 20px;
+            border-radius: 20px;
+            font-size: 14.5px;
+            line-height: 1.6;
             animation: slideFadeIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-            opacity: 0; transform: translateY(15px);
+            opacity: 0;
+            transform: translateY(15px);
         }
+
         .message.ai {
-            background: var(--ai-bubble); color: #e2e8f0;
-            border-bottom-left-radius: 4px; align-self: flex-start;
-            border: 1px solid rgba(255,255,255,0.08);
+            background: var(--ai-bubble);
+            color: #e2e8f0;
+            border-bottom-left-radius: 4px;
+            align-self: flex-start;
+            border: 1px solid rgba(255, 255, 255, 0.08);
             backdrop-filter: blur(10px);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
+
         .message.user {
-            background: var(--user-bubble); color: #0a0a0a; font-weight: 500;
-            border-bottom-right-radius: 4px; align-self: flex-end;
+            background: var(--user-bubble);
+            color: #0a0a0a;
+            font-weight: 500;
+            border-bottom-right-radius: 4px;
+            align-self: flex-end;
             box-shadow: 0 8px 20px rgba(0, 242, 254, 0.3);
         }
 
         /* Glowing Console Input Zone */
         .input-group {
-            display: flex; gap: 12px; margin-top: 20px;
-            background: rgba(0,0,0,0.4); padding: 10px; border-radius: 20px;
-            border: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 10px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
             transition: all 0.3s ease;
-            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
         }
+
         .input-group:focus-within {
             border-color: rgba(0, 242, 254, 0.6);
-            box-shadow: 0 0 25px rgba(0, 242, 254, 0.3), inset 0 0 10px rgba(0,0,0,0.5);
+            box-shadow: 0 0 25px rgba(0, 242, 254, 0.3), inset 0 0 10px rgba(0, 0, 0, 0.5);
         }
+
         input[type="text"] {
-            flex: 1; background: transparent; border: none; color: #fff;
-            padding: 10px 15px; font-size: 15px; outline: none;
-            font-family: 'Space Grotesk', sans-serif; letter-spacing: 0.5px;
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: #fff;
+            padding: 10px 15px;
+            font-size: 15px;
+            outline: none;
+            font-family: 'Space Grotesk', sans-serif;
+            letter-spacing: 0.5px;
         }
-        input::placeholder { color: rgba(255,255,255,0.3); }
-        
+
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
         .action-btn {
-            background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); 
-            font-size: 18px; cursor: pointer; padding: 12px; border-radius: 14px; 
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 18px;
+            cursor: pointer;
+            padding: 12px;
+            border-radius: 14px;
             transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            display: flex; align-items: center; justify-content: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        .action-btn:hover { 
-            background: rgba(255,255,255,0.1); 
+
+        .action-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
             transform: scale(1.1);
         }
+
         .action-btn:active {
             transform: scale(0.95);
         }
-        .send-btn { color: var(--primary); border-color: rgba(0,242,254,0.3); }
-        .send-btn:hover { background: rgba(0,242,254,0.15); box-shadow: 0 0 15px rgba(0,242,254,0.4); }
-        .mic-btn { color: #ff4b2b; border-color: rgba(255,75,43,0.3); }
-        .mic-btn:hover { background: rgba(255,75,43,0.15); box-shadow: 0 0 15px rgba(255,75,43,0.4); }
+
+        .send-btn {
+            color: var(--primary);
+            border-color: rgba(0, 242, 254, 0.3);
+        }
+
+        .send-btn:hover {
+            background: rgba(0, 242, 254, 0.15);
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.4);
+        }
+
+        .mic-btn {
+            color: #ff4b2b;
+            border-color: rgba(255, 75, 43, 0.3);
+        }
+
+        .mic-btn:hover {
+            background: rgba(255, 75, 43, 0.15);
+            box-shadow: 0 0 15px rgba(255, 75, 43, 0.4);
+        }
 
         /* Animations */
-        @keyframes slideFadeIn { to { opacity: 1; transform: translateY(0); } }
-        @keyframes pulse { 0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 242, 254, 0.7); } 70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(0, 242, 254, 0); } 100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 242, 254, 0); } }
-        
+        @keyframes slideFadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(0, 242, 254, 0.7);
+            }
+
+            70% {
+                transform: scale(1);
+                box-shadow: 0 0 0 8px rgba(0, 242, 254, 0);
+            }
+
+            100% {
+                transform: scale(0.95);
+                box-shadow: 0 0 0 0 rgba(0, 242, 254, 0);
+            }
+        }
+
         /* Typing Indicator */
-        .typing { display: flex; gap: 5px; padding: 8px; align-items: center; justify-content: center; height: 14px;}
-        .typing .dot { width: 7px; height: 7px; background: var(--primary); border-radius: 50%; animation: bounce 1.4s infinite ease-in-out both; box-shadow: 0 0 8px var(--primary); }
-        .typing .dot:nth-child(1) { animation-delay: -0.32s; }
-        .typing .dot:nth-child(2) { animation-delay: -0.16s; }
-        @keyframes bounce { 0%, 80%, 100% { transform: scale(0); opacity: 0.5; } 40% { transform: scale(1); opacity: 1; } }
+        .typing {
+            display: flex;
+            gap: 5px;
+            padding: 8px;
+            align-items: center;
+            justify-content: center;
+            height: 14px;
+        }
+
+        .typing .dot {
+            width: 7px;
+            height: 7px;
+            background: var(--primary);
+            border-radius: 50%;
+            animation: bounce 1.4s infinite ease-in-out both;
+            box-shadow: 0 0 8px var(--primary);
+        }
+
+        .typing .dot:nth-child(1) {
+            animation-delay: -0.32s;
+        }
+
+        .typing .dot:nth-child(2) {
+            animation-delay: -0.16s;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            80%,
+            100% {
+                transform: scale(0);
+                opacity: 0.5;
+            }
+
+            40% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
     </style>
 </head>
+
 <body>
     <h1>VENUE<span style="color: #00f2fe;">VIBE</span></h1>
-    
+
     <div class="dashboard">
         <div class="glass-panel">
             <div style="display: flex; justify-content: space-between; margin-bottom: 20px; align-items: center;">
                 <h3>Live Stadium Map</h3>
-                <span style="font-size: 13px; color: #00f2fe; background: rgba(0,242,254,0.1); padding: 4px 10px; border-radius: 12px; border: 1px solid rgba(0,242,254,0.2); font-weight: 500;">Gate 4 Zone</span>
+                <span
+                    style="font-size: 13px; color: #00f2fe; background: rgba(0,242,254,0.1); padding: 4px 10px; border-radius: 12px; border: 1px solid rgba(0,242,254,0.2); font-weight: 500;">Gate
+                    4 Zone</span>
             </div>
             <div id="map"></div>
             <div class="quick-chips">
-                <div class="chip" onclick="sendQuickMessage('Where is the nearest restroom with the shortest line?')">🚻 Nearest Restroom</div>
-                <div class="chip" onclick="sendQuickMessage('What is the current wait time at Food Court A?')">🍔 Food Wait Times</div>
-                <div class="chip" onclick="sendQuickMessage('Suggest the fastest exit route to the parking lot.')">🏃 Fastest Exit</div>
+                <div class="chip" onclick="sendQuickMessage('Where is the nearest restroom with the shortest line?')">🚻
+                    Nearest Restroom</div>
+                <div class="chip" onclick="sendQuickMessage('What is the current wait time at Food Court A?')">🍔 Food
+                    Wait Times</div>
+                <div class="chip" onclick="sendQuickMessage('Suggest the fastest exit route to the parking lot.')">🏃
+                    Fastest Exit</div>
             </div>
         </div>
 
         <div class="glass-panel">
             <div class="chat-header">
                 <h3>AI Concierge</h3>
-                <div style="font-size: 13px; color: #94a3b8; display: flex; align-items: center; gap: 8px; font-family: 'Space Grotesk', sans-serif;">
+                <div
+                    style="font-size: 13px; color: #94a3b8; display: flex; align-items: center; gap: 8px; font-family: 'Space Grotesk', sans-serif;">
                     <span class="status-dot"></span> System Online
                 </div>
             </div>
-            
+
             <div id="chat-history">
-                <div class="message ai">Welcome to VenueVibe! I'm your AI guide powered by Gemini. How can I optimize your event experience today?</div>
+                <div class="message ai">Welcome to VenueVibe! I'm your AI guide powered by Gemini. How can I optimize
+                    your event experience today?</div>
             </div>
-            
+
             <div class="input-group">
                 <button onclick="startDictation()" class="action-btn mic-btn" title="Voice Input">🎙️</button>
-                <input type="text" id="userInput" placeholder="Terminal / Ask about routes, lines..." onkeypress="handleEnter(event)">
+                <input type="text" id="userInput" placeholder="Terminal / Ask about routes, lines..."
+                    onkeypress="handleEnter(event)">
                 <button onclick="askAI()" class="action-btn send-btn" title="Send">➤</button>
             </div>
         </div>
@@ -240,20 +424,20 @@
 
         // Initialize Google Maps
         function initMap() {
-            const stadiumCoords = { lat: 28.6143, lng: 77.2001 }; 
+            const stadiumCoords = { lat: 28.6143, lng: 77.2001 };
             map = new google.maps.Map(document.getElementById("map"), {
                 zoom: 17, center: stadiumCoords, mapTypeId: 'satellite', disableDefaultUI: true,
                 styles: [
-                    {elementType: 'geometry', stylers: [{color: '#242f3e'}]},
-                    {elementType: 'labels.text.stroke', stylers: [{color: '#242f3e'}]},
-                    {elementType: 'labels.text.fill', stylers: [{color: '#746855'}]},
-                    {featureType: 'administrative.locality', elementType: 'labels.text.fill', stylers: [{color: '#d59563'}]},
-                    {featureType: 'road', elementType: 'geometry', stylers: [{color: '#38414e'}]},
-                    {featureType: 'road', elementType: 'geometry.stroke', stylers: [{color: '#212a37'}]},
-                    {featureType: 'road', elementType: 'labels.text.fill', stylers: [{color: '#9ca5b3'}]},
-                    {featureType: 'water', elementType: 'geometry', stylers: [{color: '#17263c'}]},
-                    {featureType: 'water', elementType: 'labels.text.fill', stylers: [{color: '#515c6d'}]},
-                    {featureType: 'water', elementType: 'labels.text.stroke', stylers: [{color: '#17263c'}]}
+                    { elementType: 'geometry', stylers: [{ color: '#242f3e' }] },
+                    { elementType: 'labels.text.stroke', stylers: [{ color: '#242f3e' }] },
+                    { elementType: 'labels.text.fill', stylers: [{ color: '#746855' }] },
+                    { featureType: 'administrative.locality', elementType: 'labels.text.fill', stylers: [{ color: '#d59563' }] },
+                    { featureType: 'road', elementType: 'geometry', stylers: [{ color: '#38414e' }] },
+                    { featureType: 'road', elementType: 'geometry.stroke', stylers: [{ color: '#212a37' }] },
+                    { featureType: 'road', elementType: 'labels.text.fill', stylers: [{ color: '#9ca5b3' }] },
+                    { featureType: 'water', elementType: 'geometry', stylers: [{ color: '#17263c' }] },
+                    { featureType: 'water', elementType: 'labels.text.fill', stylers: [{ color: '#515c6d' }] },
+                    { featureType: 'water', elementType: 'labels.text.stroke', stylers: [{ color: '#17263c' }] }
                 ]
             });
 
@@ -266,7 +450,7 @@
                 data: crowdData, map: map, radius: 45, opacity: 0.9,
                 gradient: ['rgba(0, 255, 255, 0)', 'rgba(0, 255, 255, 1)', 'rgba(0, 191, 255, 1)', 'rgba(0, 127, 255, 1)', 'rgba(0, 63, 255, 1)', 'rgba(0, 0, 255, 1)', 'rgba(0, 0, 223, 1)', 'rgba(0, 0, 191, 1)', 'rgba(0, 0, 159, 1)', 'rgba(0, 0, 127, 1)', 'rgba(63, 0, 91, 1)', 'rgba(127, 0, 63, 1)', 'rgba(191, 0, 31, 1)', 'rgba(255, 0, 0, 1)']
             });
-            
+
             new google.maps.Marker({ position: stadiumCoords, map: map, title: "Your Location", icon: { url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png" } });
         }
 
@@ -293,7 +477,7 @@
         }
 
         function handleEnter(e) { if (e.key === 'Enter') askAI(); }
-        
+
         function sendQuickMessage(text) {
             inputField.value = text;
             askAI();
@@ -306,7 +490,7 @@
                 recognition.lang = "en-IN";
                 recognition.start();
                 inputField.placeholder = "Listening...";
-                recognition.onresult = function(e) {
+                recognition.onresult = function (e) {
                     inputField.value = e.results[0][0].transcript;
                     askAI();
                     inputField.placeholder = "Terminal / Ask about routes, lines...";
@@ -317,12 +501,12 @@
         // Connect to FastAPI Backend
         async function askAI() {
             const query = inputField.value.trim();
-            if(!query) return;
+            if (!query) return;
 
             appendMessage('user', query);
             inputField.value = '';
             const typingIndicator = showTyping();
-            
+
             try {
                 // Pointing to your FastAPI route serving on Cloud Run
                 const response = await fetch('/api/ask-gemini', {
@@ -330,12 +514,12 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ user_location: "Gate 4", query: query })
                 });
-                
+
                 typingIndicator.remove();
-                
+
                 if (!response.ok) throw new Error("Server error");
                 const data = await response.json();
-                
+
                 // Add a small delay to simulate human typing speed
                 setTimeout(() => {
                     appendMessage('ai', data.response);
@@ -347,7 +531,9 @@
             }
         }
     </script>
-    
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key={{ MAPS_API_KEY }}&libraries=visualization&callback=initMap"></script>
+
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBz6xsSJRm1nzy8Apo7w0meyZNhjnRlaHk&libraries=visualization&callback=initMap"></script>
 </body>
+
 </html>
