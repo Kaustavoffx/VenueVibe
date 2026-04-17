@@ -374,11 +374,120 @@
                 transform: scale(1);
                 opacity: 1;
             }
+        @keyframes pulseRed {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 75, 43, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 15px rgba(255, 75, 43, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 75, 43, 0); }
+        }
+
+        .vibe-points {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px 20px;
+            border-radius: 30px;
+            border: 1px solid var(--primary);
+            box-shadow: 0 0 15px var(--primary);
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            color: #fff;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .pulse-beacon-btn {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: #ff4b2b;
+            border: 2px solid #fff;
+            color: white;
+            font-size: 28px;
+            cursor: pointer;
+            box-shadow: 0 0 20px #ff4b2b;
+            animation: pulseRed 2s infinite;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            transition: transform 0.2s;
+        }
+
+        .pulse-beacon-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .pulse-marker {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: #ff4b2b;
+            border-radius: 50%;
+            box-shadow: 0 0 20px #ff4b2b;
+            animation: pulseRed 1s infinite;
+            transform: translate(-50%, -50%);
+            border: 2px solid #fff;
+        }
+
+        #toast {
+            position: fixed;
+            bottom: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 242, 254, 0.15);
+            border: 1px solid var(--primary);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            color: #fff;
+            padding: 15px 25px;
+            border-radius: 30px;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            box-shadow: 0 10px 30px rgba(0, 242, 254, 0.3);
+            transition: bottom 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 3000;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            width: 90%;
+            max-width: 600px;
+        }
+
+        #beacon-modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2000;
+            text-align: center;
+            width: 90%;
+            max-width: 400px;
+        }
+
+        #modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            z-index: 1999;
         }
     </style>
 </head>
 
 <body>
+    <div class="vibe-points">VibePoints 🪙 (Score: <span id="vibe-score">0</span>)</div>
     <h1>VENUE<span style="color: #00f2fe;">VIBE</span></h1>
 
     <main class="dashboard">
@@ -389,7 +498,10 @@
                     style="font-size: 13px; color: #00f2fe; background: rgba(0,242,254,0.1); padding: 4px 10px; border-radius: 12px; border: 1px solid rgba(0,242,254,0.2); font-weight: 500;">Gate
                     4 Zone</span>
             </div>
-            <div id="map"></div>
+            <div style="position: relative;">
+                <div id="map"></div>
+                <button class="pulse-beacon-btn" onclick="activateBeacon()" title="Pulse Beacon">📡</button>
+            </div>
             <div class="quick-chips">
                 <div class="chip" onclick="sendQuickMessage('Where is the nearest restroom with the shortest line?')">🚻
                     Nearest Restroom</div>
@@ -423,8 +535,86 @@
         </div>
     </main>
 
+    <div id="toast">
+        <span>Want +50 VibePoints? Route to the Section 112 Grab-and-Go instead to balance the crowd!</span>
+        <button onclick="claimPoints()" class="chip" style="margin: 0; padding: 6px 15px; background: var(--primary); color: #000; border: none; font-weight: bold;">Accept</button>
+    </div>
+
+    <div id="modal-overlay"></div>
+    <div id="beacon-modal" class="glass-panel">
+        <h3 style="color: #ff4b2b; margin-bottom: 10px; font-size: 1.5rem;">Beacon Activated</h3>
+        <p style="margin-bottom: 20px; font-size: 14px; color: #cbd5e1;">Broadcast this pin to friends or Stadium Security.</p>
+        <div style="display: flex; justify-content: center; gap: 10px;">
+            <button onclick="copyLocation()" class="chip" style="background: rgba(255, 75, 43, 0.2); border-color: #ff4b2b; color: #fff;">Copy Location Link</button>
+            <button onclick="closeBeacon()" class="chip" style="background: rgba(255, 255, 255, 0.1); border-color: rgba(255,255,255,0.3);">Close</button>
+        </div>
+    </div>
+
     <script>
         let map, heatmap;
+        let vibePoints = parseInt(localStorage.getItem('vibePoints')) || 0;
+        
+        // Initialize points on load
+        document.getElementById('vibe-score').innerText = vibePoints;
+
+        function claimPoints() {
+            vibePoints += 50;
+            localStorage.setItem('vibePoints', vibePoints);
+            document.getElementById('vibe-score').innerText = vibePoints;
+            document.getElementById('toast').style.bottom = '-100px';
+        }
+
+        let customMarker = null;
+
+        function activateBeacon() {
+            document.getElementById('beacon-modal').style.display = 'block';
+            document.getElementById('modal-overlay').style.display = 'block';
+            
+            if (!customMarker && typeof google !== 'undefined') {
+                class PulseMarker extends google.maps.OverlayView {
+                    constructor(latlng, map) {
+                        super();
+                        this.latlng = latlng;
+                        this.setMap(map);
+                    }
+                    onAdd() {
+                        const div = document.createElement("div");
+                        div.className = "pulse-marker";
+                        this.div = div;
+                        this.getPanes().overlayImage.appendChild(div);
+                    }
+                    draw() {
+                        const point = this.getProjection().fromLatLngToDivPixel(this.latlng);
+                        if (point) {
+                            this.div.style.left = point.x + "px";
+                            this.div.style.top = point.y + "px";
+                        }
+                    }
+                    onRemove() {
+                        if (this.div) {
+                            this.div.parentNode.removeChild(this.div);
+                            this.div = null;
+                        }
+                    }
+                }
+                const stadiumCoords = new google.maps.LatLng(28.6143, 77.2001);
+                customMarker = new PulseMarker(stadiumCoords, map);
+            }
+        }
+
+        function closeBeacon() {
+            document.getElementById('beacon-modal').style.display = 'none';
+            document.getElementById('modal-overlay').style.display = 'none';
+        }
+
+        function copyLocation() {
+            navigator.clipboard.writeText("https://venuevibe.app/beacon?lat=28.6143&lng=77.2001").then(() => {
+                const btn = document.querySelector('#beacon-modal .chip:first-child');
+                const originalText = btn.innerText;
+                btn.innerText = "Copied! ✔";
+                setTimeout(() => { btn.innerText = originalText; }, 2000);
+            });
+        }
 
         // Initialize Google Maps
         function initMap() {
@@ -485,6 +675,14 @@
         function sendQuickMessage(text) {
             inputField.value = text;
             askAI();
+            
+            // Gamification Intercept
+            if (text.includes("Food") || text.includes("Restroom") || text.includes("Exit")) {
+                setTimeout(() => {
+                    document.getElementById('toast').style.bottom = '30px';
+                    setTimeout(() => { document.getElementById('toast').style.bottom = '-100px'; }, 8000);
+                }, 1500);
+            }
         }
 
         // Voice to Text
