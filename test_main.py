@@ -15,11 +15,11 @@ def test_gemini_validation_error():
     response = client.post("/api/ask-gemini", json={})
     assert response.status_code == 422 
 
-@patch("main.client.models.generate_content")
-def test_gemini_mocked_success(mock_generate):
+@patch("main.client")
+def test_gemini_mocked_success(mock_client):
     """Testing: Mocks the Google GenAI SDK to ensure isolated unit testing without API keys."""
     # Mock the AI's response
-    mock_generate.return_value.text = "Mocked AI route recommendation."
+    mock_client.models.generate_content.return_value.text = "Mocked AI route recommendation."
     
     payload = {
         "user_location": "Gate 3",
@@ -28,4 +28,4 @@ def test_gemini_mocked_success(mock_generate):
     response = client.post("/api/ask-gemini", json=payload)
     
     # Even if API keys are missing, the mock forces a 200 OK
-    assert response.status_code in [200, 500, 503]
+    assert response.status_code == 200
