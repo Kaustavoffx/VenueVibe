@@ -1,25 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VenueVibe: Smart Stadium Guide</title>
     <meta name="description" content="AI-powered smart stadium guide to navigate venues efficiently.">
     <style>
-        body { font-family: system-ui, sans-serif; background-color: #f4f4f9; color: #1a1a1a; margin: 0; padding: 0; }
-        #map { height: 400px; width: 100%; border-radius: 8px; border: 1px solid #ccc; margin-bottom: 20px;}
-        .chat-box { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        input, button { padding: 12px; margin-top: 10px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px; }
-        input { width: calc(100% - 26px); box-sizing: border-box; }
-        button { background-color: #1a73e8; color: white; border: none; cursor: pointer; border-radius: 4px; padding: 12px 20px; }
-        button:hover { background-color: #1557b0; }
-        .response { margin-top: 15px; padding: 10px; background-color: #e8f0fe; border-radius: 4px; }
+        body {
+            font-family: system-ui, sans-serif;
+            background-color: #f4f4f9;
+            color: #1a1a1a;
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            height: 400px;
+            width: 100%;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            margin-bottom: 20px;
+        }
+
+        .chat-box {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        input,
+        button {
+            padding: 12px;
+            margin-top: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        input {
+            width: calc(100% - 26px);
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #1a73e8;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            padding: 12px 20px;
+        }
+
+        button:hover {
+            background-color: #1557b0;
+        }
+
+        .response {
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #e8f0fe;
+            border-radius: 4px;
+        }
     </style>
 </head>
+
 <body>
     <main style="max-width: 800px; margin: auto; padding: 20px;">
         <h1>Navigate the Arena with AI</h1>
-        
+
         <section aria-label="Interactive Stadium Map">
             <div id="map" role="application" aria-label="Google Map showing stadium layout"></div>
         </section>
@@ -28,7 +78,8 @@
             <h2>Ask VenueVibe Assistant</h2>
             <div id="response-area" aria-live="polite"></div>
             <label for="userInput" style="display: none;">Ask the AI a question</label>
-            <input type="text" id="userInput" placeholder="E.g., Which restroom has the shortest line?" aria-label="Ask the AI a question">
+            <input type="text" id="userInput" placeholder="E.g., Which restroom has the shortest line?"
+                aria-label="Ask the AI a question">
             <button onclick="askAI()" aria-label="Submit question to AI">Ask AI</button>
         </section>
     </main>
@@ -51,19 +102,18 @@
 
             const resArea = document.getElementById('response-area');
             resArea.innerHTML = "<div class='response'><em>Analyzing crowd data...</em></div>";
-            
+
             try {
-                // Replace this URL with your ACTUAL Cloud Run link
-                const response = await fetch('https://venuevibe-xxxxx-uc.a.run.app/api/ask-gemini', {
+                const response = await fetch('/api/ask-gemini', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ user_location: "Gate 4", query: query })
                 });
-                
+
                 if (!response.ok) {
                     throw new Error("Network response was not ok");
                 }
-                
+
                 const data = await response.json();
                 resArea.innerHTML = `<div class='response'><p><strong>AI:</strong> ${data.response}</p></div>`;
             } catch (error) {
@@ -71,6 +121,8 @@
             }
         }
     </script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_MAPS_API_KEY&callback=initMap"></script>
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBz6xsSJRm1nzy8Apo7w0meyZNhjnRlaHk&callback=initMap"></script>
 </body>
+
 </html>
