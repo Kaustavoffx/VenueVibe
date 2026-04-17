@@ -1,128 +1,178 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VenueVibe: Smart Stadium Guide</title>
-    <meta name="description" content="AI-powered smart stadium guide to navigate venues efficiently.">
     <style>
+        /* Modern Glassmorphism UI */
         body {
-            font-family: system-ui, sans-serif;
-            background-color: #f4f4f9;
-            color: #1a1a1a;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            color: #ffffff;
             margin: 0;
-            padding: 0;
-        }
-
-        #map {
-            height: 400px;
-            width: 100%;
-            border-radius: 8px;
-            border: 1px solid #ccc;
-            margin-bottom: 20px;
-        }
-
-        .chat-box {
-            background: #fff;
             padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        h1 { font-weight: 300; letter-spacing: 2px; }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            width: 100%;
+            max-width: 900px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+        #map { height: 450px; width: 100%; border-radius: 10px; }
+        .input-group { display: flex; gap: 10px; margin-top: 15px; }
+        input[type="text"] {
+            flex: 1;
+            padding: 15px;
             border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        input,
-        button {
-            padding: 12px;
-            margin-top: 10px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-
-        input {
-            width: calc(100% - 26px);
-            box-sizing: border-box;
-        }
-
-        button {
-            background-color: #1a73e8;
-            color: white;
             border: none;
+            background: rgba(255, 255, 255, 0.9);
+            font-size: 16px;
+        }
+        button {
+            padding: 15px 25px;
+            border: none;
+            border-radius: 8px;
+            background: #00d2ff;
+            background: linear-gradient(to right, #3a7bd5, #00d2ff);
+            color: white;
+            font-weight: bold;
             cursor: pointer;
-            border-radius: 4px;
-            padding: 12px 20px;
+            transition: transform 0.2s;
         }
-
-        button:hover {
-            background-color: #1557b0;
-        }
-
-        .response {
+        button:hover { transform: scale(1.05); }
+        .mic-btn { background: #ff416c; background: linear-gradient(to right, #ff4b2b, #ff416c); }
+        #response-area {
             margin-top: 15px;
-            padding: 10px;
-            background-color: #e8f0fe;
-            border-radius: 4px;
+            padding: 15px;
+            border-left: 4px solid #00d2ff;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 0 8px 8px 0;
+            min-height: 50px;
         }
     </style>
 </head>
-
 <body>
-    <main style="max-width: 800px; margin: auto; padding: 20px;">
-        <h1>Navigate the Arena with AI</h1>
+    <h1>VENUE<span style="font-weight: bold; color: #00d2ff;">VIBE</span></h1>
+    
+    <div class="glass-panel">
+        <div id="map" aria-label="Interactive Stadium Map"></div>
+    </div>
 
-        <section aria-label="Interactive Stadium Map">
-            <div id="map" role="application" aria-label="Google Map showing stadium layout"></div>
-        </section>
-
-        <section class="chat-box" aria-label="AI Assistant Chat">
-            <h2>Ask VenueVibe Assistant</h2>
-            <div id="response-area" aria-live="polite"></div>
-            <label for="userInput" style="display: none;">Ask the AI a question</label>
-            <input type="text" id="userInput" placeholder="E.g., Which restroom has the shortest line?"
-                aria-label="Ask the AI a question">
-            <button onclick="askAI()" aria-label="Submit question to AI">Ask AI</button>
-        </section>
-    </main>
+    <div class="glass-panel">
+        <h2>AI Concierge</h2>
+        <div id="response-area">Ask me about restroom lines, food wait times, or the fastest exit!</div>
+        
+        <div class="input-group">
+            <input type="text" id="userInput" placeholder="E.g., Which gate is least crowded right now?">
+            <button onclick="askAI()" id="askBtn">Ask AI</button>
+            <button onclick="startDictation()" class="mic-btn" title="Speak your question">🎤</button>
+        </div>
+    </div>
 
     <script>
-        // Google Maps Initialization
+        let map, heatmap;
+
         function initMap() {
-            const stadium = { lat: 28.6139, lng: 77.2090 }; // Example: Delhi coords
-            const map = new google.maps.Map(document.getElementById("map"), {
+            // Centered on a generic stadium location (can adjust to Rashtrapati Bhavan coords if desired)
+            const stadiumCoords = { lat: 28.6143, lng: 77.2001 }; 
+            map = new google.maps.Map(document.getElementById("map"), {
                 zoom: 16,
-                center: stadium,
+                center: stadiumCoords,
+                mapTypeId: 'satellite'
             });
-            new google.maps.Marker({ position: stadium, map: map, title: "Stadium Center" });
+
+            // Feature: Simulated Real-time Crowd Heatmap
+            const crowdData = [
+                new google.maps.LatLng(28.6145, 77.2005),
+                new google.maps.LatLng(28.6144, 77.2004),
+                new google.maps.LatLng(28.6146, 77.2006),
+                new google.maps.LatLng(28.6139, 77.1995), // Another cluster
+                new google.maps.LatLng(28.6138, 77.1994)
+            ];
+
+            heatmap = new google.maps.visualization.HeatmapLayer({
+                data: crowdData,
+                map: map,
+                radius: 40,
+                opacity: 0.8
+            });
+            
+            // Feature: Interactive Clickable Marker
+            const marker = new google.maps.Marker({
+                position: stadiumCoords,
+                map: map,
+                title: "Food Court A"
+            });
+            
+            marker.addListener("click", () => {
+                document.getElementById('userInput').value = "What is the current wait time at Food Court A?";
+            });
         }
 
-        // Fetch to backend
+        // Feature: Voice to Text Setup
+        function startDictation() {
+            if (window.hasOwnProperty('webkitSpeechRecognition')) {
+                const recognition = new webkitSpeechRecognition();
+                recognition.continuous = false;
+                recognition.interimResults = false;
+                recognition.lang = "en-IN";
+                recognition.start();
+
+                document.getElementById('userInput').placeholder = "Listening...";
+
+                recognition.onresult = function(e) {
+                    document.getElementById('userInput').value = e.results[0][0].transcript;
+                    recognition.stop();
+                    document.getElementById('userInput').placeholder = "E.g., Which gate is least crowded right now?";
+                };
+                recognition.onerror = function(e) { recognition.stop(); }
+            } else {
+                alert("Voice recognition not supported in this browser. Please type your query.");
+            }
+        }
+
         async function askAI() {
             const query = document.getElementById('userInput').value;
-            if (!query) return;
-
             const resArea = document.getElementById('response-area');
-            resArea.innerHTML = "<div class='response'><em>Analyzing crowd data...</em></div>";
+            const askBtn = document.getElementById('askBtn');
+            
+            if(!query) return;
 
+            resArea.innerHTML = "<em>Analyzing live crowd patterns...</em>";
+            askBtn.disabled = true;
+            
             try {
+                // Ensure this is hitting the current domain's API route
                 const response = await fetch('/api/ask-gemini', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ user_location: "Gate 4", query: query })
                 });
-
-                if (!response.ok) {
-                    throw new Error("Network response was not ok");
-                }
-
+                
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                
                 const data = await response.json();
-                resArea.innerHTML = `<div class='response'><p><strong>AI:</strong> ${data.response}</p></div>`;
+                resArea.innerHTML = `<strong>AI:</strong> ${data.response}`;
             } catch (error) {
-                resArea.innerHTML = `<div class='response' style='color: red;'><p><strong>Error:</strong> Failed to connect to AI assistant.</p></div>`;
+                resArea.innerHTML = `<span style="color: #ff4b2b;">Error: Ensure you are viewing the live Cloud Run URL, not a local file.</span>`;
+                console.error("AI Fetch Error:", error);
+            } finally {
+                askBtn.disabled = false;
             }
         }
     </script>
-    <script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBz6xsSJRm1nzy8Apo7w0meyZNhjnRlaHk&callback=initMap"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBz6xsSJRm1nzy8Apo7w0meyZNhjnRlaHk&libraries=visualization&callback=initMap"></script>
 </body>
-
 </html>
