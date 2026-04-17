@@ -5,14 +5,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VenueVibe | Premium Event Experience</title>
-    <!-- Import Space Grotesk and Inter fonts asynchronously for performance -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <meta name="description" content="VenueVibe: The ultimate AI-powered physical event experience and stadium navigator.">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <link rel="preconnect" href="https://maps.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Space+Grotesk:wght@500;700&display=swap">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Space+Grotesk:wght@500;700&display=swap" media="print" onload="this.media='all'">
-    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Space+Grotesk:wght@500;700&display=swap"></noscript>
-    
-    <meta name="description" content="VenueVibe is an AI-powered smart conciergerie for navigating physical events, stadiums, and finding the shortest lines.">
+    <!-- Import Space Grotesk and Inter fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Space+Grotesk:wght@500;700&display=swap"
+        rel="stylesheet">
     <style>
         /* ===== GOD-TIER CSS STYLING ===== */
         :root {
@@ -111,7 +111,7 @@
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .glass-panel h2 {
+        .glass-panel h3 {
             font-family: 'Space Grotesk', sans-serif;
             margin: 0;
             font-weight: 500;
@@ -382,9 +382,9 @@
     <h1>VENUE<span style="color: #00f2fe;">VIBE</span></h1>
 
     <main class="dashboard">
-        <section class="glass-panel" aria-label="Map Section">
+        <div class="glass-panel">
             <div style="display: flex; justify-content: space-between; margin-bottom: 20px; align-items: center;">
-                <h2>Live Stadium Map</h2>
+                <h2 style="margin: 0; font-size: 1.17em;">Live Stadium Map</h2>
                 <span
                     style="font-size: 13px; color: #00f2fe; background: rgba(0,242,254,0.1); padding: 4px 10px; border-radius: 12px; border: 1px solid rgba(0,242,254,0.2); font-weight: 500;">Gate
                     4 Zone</span>
@@ -398,11 +398,11 @@
                 <div class="chip" onclick="sendQuickMessage('Suggest the fastest exit route to the parking lot.')">🏃
                     Fastest Exit</div>
             </div>
-        </section>
+        </div>
 
-        <section class="glass-panel" aria-label="AI Chat Section">
+        <div class="glass-panel">
             <div class="chat-header">
-                <h2>AI Concierge</h2>
+                <h2 style="margin: 0; font-size: 1.17em;">AI Concierge</h2>
                 <div
                     style="font-size: 13px; color: #94a3b8; display: flex; align-items: center; gap: 8px; font-family: 'Space Grotesk', sans-serif;">
                     <span class="status-dot"></span> System Online
@@ -420,7 +420,7 @@
                     onkeypress="handleEnter(event)">
                 <button onclick="askAI()" class="action-btn send-btn" title="Send">➤</button>
             </div>
-        </section>
+        </div>
     </main>
 
     <script>
@@ -455,7 +455,7 @@
                 gradient: ['rgba(0, 255, 255, 0)', 'rgba(0, 255, 255, 1)', 'rgba(0, 191, 255, 1)', 'rgba(0, 127, 255, 1)', 'rgba(0, 63, 255, 1)', 'rgba(0, 0, 255, 1)', 'rgba(0, 0, 223, 1)', 'rgba(0, 0, 191, 1)', 'rgba(0, 0, 159, 1)', 'rgba(0, 0, 127, 1)', 'rgba(63, 0, 91, 1)', 'rgba(127, 0, 63, 1)', 'rgba(191, 0, 31, 1)', 'rgba(255, 0, 0, 1)']
             });
 
-            new google.maps.Marker({ position: stadiumCoords, map: map, title: "Your Location", icon: { url: "https://maps.google.com/mapfiles/ms/icons/blue-dot.png" } });
+            new google.maps.Marker({ position: stadiumCoords, map: map, title: "Your Location", icon: { url: "https://maps.gstatic.com/mapfiles/api-3/images/spotlight-poi3.png" } });
         }
 
         // Chat UI Functions
