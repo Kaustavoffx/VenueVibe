@@ -1,0 +1,28 @@
+graph TD
+    %% User Interaction
+    A[Client Browser: VenueVibe PWA] -->|HTTPS Request| B(Google Cloud Run: FastAPI Server)
+    
+    %% Security & Validation
+    B --> C{Pydantic Schema Validation}
+    C -->|Invalid| D[422 Error Response]
+    C -->|Valid| E[System Context Injector]
+    
+    %% AI Processing (In-Context Tuning)
+    E -->|In-Context Prompt Tuning| F[Google Gemini 2.5 Flash via Vertex/GenAI API]
+    
+    %% Backend Logic & Gamification
+    F --> G[Route Optimization Engine]
+    G -->|Calculate Crowd Load| H[VibePoints Gamification Logic]
+    H -->|Stateless Reward| I[Frontend UI: Toast Notification]
+    
+    %% Real-time Mapping
+    I --> J[Google Maps API: Live Routing]
+    
+    %% Styling
+    classDef cloud fill:#4285F4,stroke:#fff,stroke-width:2px,color:#fff;
+    classDef ai fill:#0F9D58,stroke:#fff,stroke-width:2px,color:#fff;
+    classDef client fill:#F4B400,stroke:#fff,stroke-width:2px,color:#333;
+    
+    class A,I,J client;
+    class B,C,E,G,H cloud;
+    class F ai;

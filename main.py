@@ -1,58 +1,58 @@
 import os
+import logging
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import HTMLResponse, FileResponse
-from fastapi import Request
-from pydantic import BaseModel
+from fastapi.responses import FileResponse
+from pydantic import BaseModel, Field
 from google import genai
 from dotenv import load_dotenv
 
-# Security: Load environment variables
+# Security: Load env vars and setup logging
 load_dotenv()
+logging.basicConfig(level=logging.INFO)
 
-app = FastAPI(title="VenueVibe API", description="AI-powered stadium experience")
+app = FastAPI(title="VenueVibe API", description="AI-powered stadium experience", version="1.0.0")
 
-# Security: CORS Policy
+# Security: Strict CORS Policy (Only allow your live site)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"], 
+    allow_origins=["https://venuevibe-356463289853.asia-south1.run.app"], 
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST"],
     allow_headers=["*"],
 )
 
-# Google Services: Initialize Gemini Client
+# Google Services: Initialize Gemini Client safely
 client = None
 if os.getenv("GEMINI_API_KEY"):
     client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 
+# Security: Input Validation using Pydantic Fields
 class UserQuery(BaseModel):
-    user_location: str
-    query: str
+    user_location: str = Field(..., max_length=100, description="User's current stadium zone")
+    query: str = Field(..., max_length=500, description="The specific routing or wait-time request")
 
-@app.get("/")
+@app.get("/", summary="Serve Frontend")
 async def serve_index():
-    """Serves the frontend HTML using an absolute path."""
-    # Find the exact directory this Python script is running in
+    """Serves the main frontend application using an absolute path to prevent Docker pathing issues."""
     current_dir = os.path.dirname(os.path.abspath(__file__))
-    # Glue it together with the filename
     file_path = os.path.join(current_dir, "index.html")
     
-    # Check if the file exists before trying to serve it
     if not os.path.exists(file_path):
-        raise HTTPException(status_code=404, detail=f"File not found at {file_path}")
+        logging.error(f"Critical Error: Missing frontend file at {file_path}")
+        raise HTTPException(status_code=404, detail="Frontend file missing.")
         
     return FileResponse(file_path)
     
-@app.post("/api/ask-gemini")
+@app.post("/api/ask-gemini", summary="Get Venue Guidance")
 async def get_venue_guidance(query_data: UserQuery):
     """
-    Code Quality: Async function with clear type hints.
-    Takes user location and query, returns an AI-optimized route or suggestion.
+    Takes validated user location and query, returns an AI-optimized route or suggestion
+    using Google Gemini, focusing on crowd dynamics.
     """
     if not client:
-        # Fallback or error if API key is not configured
-        raise HTTPException(status_code=500, detail="Gemini API Key is not configured.")
+        logging.error("Gemini API Key is not configured in the environment.")
+        raise HTTPException(status_code=503, detail="AI Service temporarily unavailable.")
 
     system_prompt = f"""
     You are an intelligent stadium assistant. The user is currently at {query_data.user_location}. 
@@ -66,4 +66,5 @@ async def get_venue_guidance(query_data: UserQuery):
         )
         return {"response": response.text}
     except Exception as e:
+        logging.error(f"Gemini API Error: {str(e)}")
         raise HTTPException(status_code=500, detail="Error communicating with AI services.")

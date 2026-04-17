@@ -550,7 +550,7 @@
             </div>
             <div style="position: relative;">
                 <div id="map"></div>
-                <button class="pulse-beacon-btn" onclick="activateBeacon()" title="Pulse Beacon">📡</button>
+                <button aria-label="Activate Emergency Pulse Beacon" class="pulse-beacon-btn" onclick="activateBeacon()" title="Pulse Beacon">📡</button>
             </div>
             <div class="quick-chips">
                 <div class="chip" onclick="sendQuickMessage('Where is the nearest restroom with the shortest line?')">🚻
@@ -577,17 +577,17 @@
             </div>
 
             <div class="input-group">
-                <button onclick="startDictation()" class="action-btn mic-btn" title="Voice Input">🎙️</button>
+                <button aria-label="Voice Input" onclick="startDictation()" class="action-btn mic-btn" title="Voice Input">🎙️</button>
                 <input type="text" id="userInput" placeholder="Terminal / Ask about routes, lines..."
                     onkeypress="handleEnter(event)">
-                <button onclick="askAI()" class="action-btn send-btn" title="Send">➤</button>
+                <button aria-label="Send Query" onclick="askAI()" class="action-btn send-btn" title="Send">➤</button>
             </div>
         </div>
     </main>
 
     <div id="toast">
         <span>Want +50 VibePoints? Route to the Section 112 Grab-and-Go instead to balance the crowd!</span>
-        <button onclick="claimPoints()" class="chip"
+        <button aria-label="Accept VibePoints" onclick="claimPoints()" class="chip"
             style="margin: 0; padding: 6px 15px; background: var(--primary); color: #000; border: none; font-weight: bold;">Accept</button>
     </div>
 
@@ -597,10 +597,10 @@
         <p style="margin-bottom: 20px; font-size: 14px; color: #cbd5e1;">Broadcast this pin to friends or Stadium
             Security.</p>
         <div style="display: flex; justify-content: center; gap: 10px;">
-            <button onclick="copyLocation()" class="chip"
+            <button aria-label="Copy Location Link" onclick="copyLocation()" class="chip"
                 style="background: rgba(255, 75, 43, 0.2); border-color: #ff4b2b; color: #fff;">Copy Location
                 Link</button>
-            <button onclick="closeBeacon()" class="chip"
+            <button aria-label="Close Beacon Modal" onclick="closeBeacon()" class="chip"
                 style="background: rgba(255, 255, 255, 0.1); border-color: rgba(255,255,255,0.3);">Close</button>
         </div>
     </div>
